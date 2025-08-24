@@ -1,0 +1,19 @@
+{
+	"name": "japan-MOLLER Analysis Framework",
+	"build": {
+		"dockerfile": "../Dockerfile",
+		"context": ".."
+	},
+	"workspaceFolder": "/japan-MOLLER",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.cpptools",
+				"ms-vscode.cmake-tools",
+				"github.copilot"
+			]
+		}
+	},
+	"postCreateCommand": "./.devcontainer/post-create.sh",
+	"remoteUser": "root"
+}
