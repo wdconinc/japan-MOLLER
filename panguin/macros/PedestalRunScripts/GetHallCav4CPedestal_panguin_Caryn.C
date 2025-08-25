@@ -78,7 +78,6 @@ tree->SetAlias("beam_current", scan_data);
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
 
 
 

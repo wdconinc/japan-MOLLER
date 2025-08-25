@@ -75,7 +75,6 @@ void GetHallBPMPedestal_3105(int run_num=3105,TString scan_data = "bcm_an_us",TS
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
 
    double adc_mean[5][ndata]; // 4 channels  + 1channel for wire sum
   double adc_error[5][ndata];

@@ -40,7 +40,6 @@ void GetBPMPedestal_run3735_dgds(int run_num=3735,
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
 
   //  run 3396
   TCut beam_evtcut[] ={ 

@@ -81,7 +81,6 @@ void GetHallBCMPedestal_Caryn(int run_num ,TString user_cut ="1",TString scan_da
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
  
 
   double bcm_mean[ndata]; 

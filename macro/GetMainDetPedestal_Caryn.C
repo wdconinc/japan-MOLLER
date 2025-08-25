@@ -99,7 +99,6 @@ void GetMainDetPedestal_Caryn(int run_num = 1329,TString user_cut ="1",TString s
   TMultiGraph *mg_fit;
 
   TString branch_name;
-  TString num_samples_name;
 
   TF1 *f_fit = new TF1("f_fit","[1]*x+[0]",-10,10e3); // x : current
   f_fit->SetParName(0,"Pedestal");

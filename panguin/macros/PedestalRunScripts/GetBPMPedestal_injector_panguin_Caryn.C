@@ -101,7 +101,6 @@ const int nBPM= sizeof(device_name)/sizeof(*device_name);
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
   
   TString my_cut; // cut for extracting each scan data point
   

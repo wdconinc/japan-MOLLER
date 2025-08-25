@@ -34,7 +34,6 @@ void GetBCMPedestals_Caryn_run4901_unser(int run_num=4901,
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
 
   //  run 3395
   //"!(scandata1==700&&CodaEventNumber>85800&&CodaEventNumber<89300)&&!(scandata1==550&&CodaEventNumber>121e3&&CodaEventNumber<126e3)&&!(scandata1==300&&CodaEventNumber>162e3)

@@ -47,7 +47,6 @@ void GetHallBPMPedestal_panguin_Caryn(TString devnam="4a",TString scan_data = "u
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
 
 
 

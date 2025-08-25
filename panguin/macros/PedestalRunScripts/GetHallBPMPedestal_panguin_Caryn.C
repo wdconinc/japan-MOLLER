@@ -79,7 +79,6 @@ void GetHallBPMPedestal_panguin_Caryn(TString devnam="4a",TString scan_data = "u
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
  
   // for(Int_t iev=0; iev<
   // tree->Draw(Form("scandata1>>h1_%d",myii),"cleandata==1");

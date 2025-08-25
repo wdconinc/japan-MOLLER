@@ -87,7 +87,6 @@ void GetBCMPedestal_injector_panguin_Caryn(TString devnam ="0l02", TString scan_
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
   
   TString my_cut; // cut for extracting each scan data point
   

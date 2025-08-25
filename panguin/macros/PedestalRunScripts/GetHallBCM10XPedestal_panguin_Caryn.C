@@ -95,7 +95,6 @@ void GetHallBCM10XPedestal_panguin_Caryn(TString user_cut ="1",TString scan_data
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
 
 
   //  const int ndata = sizeof(beam_evtcut)/sizeof(*beam_evtcut);

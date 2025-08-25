@@ -14,7 +14,7 @@ void CycleTest(TString type="evt", TString ref="CodaEventNumber", Bool_t ldebug 
   TTree* tree_R = (TTree*)gDirectory->Get(type);
 
   //test if beam mod is on, print message and abort if it is off 
-  //this must happen first, otherwise it´ll break
+  //this must happen first, otherwise itï¿½ll break
   TString bmon = "(ErrorFlag & 0x00009000) != 0"; //flags true if BM is on
   int bmnum = tree_R->Draw("CodaEventNumber", bmon, "goff"); //number of events with BM on
   if(bmnum<10) {
@@ -62,13 +62,8 @@ void CycleTest(TString type="evt", TString ref="CodaEventNumber", Bool_t ldebug 
     }
   }
   TString cyclechoice = Form("%f",cycles[1]);
-  int Ncycles = cycles.size();
   
-
-  TString bmwcut = "bmwcycnum>0";
   TString evcut = "(ErrorFlag & 0x7bfe6fff)==0"; //basic cut, all events with beam on
-  TString evcutxcorr = "(ErrorFlag & 0x7bfe6fff)==0"; //cut for x sensitivities
-  TString evcutycorr = "(ErrorFlag & 0x7bfe6fff)==0"; //cut for y sensitivities
   TString evcutbcm = "(ErrorFlag & 0x7bfe6fff)==0 && bmwcycnum==" + cyclechoice; //cut to look at one supercycle
   TString evcutx = "(ErrorFlag & 0x7bfe6fff)==0 && bmwobj==1 | bmwobj==3 | bmwobj==5";//cut for x modulations
   TString evcuty = "(ErrorFlag & 0x7bfe6fff)==0 && bmwobj==2 | bmwobj==4 | bmwobj==6";// cut for y modulations

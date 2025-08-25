@@ -81,7 +81,6 @@ void GetHallBCMPedestal_run3396(int run_num=3396 ,TString user_cut ="1",TString 
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
  
 
   double bcm_mean[ndata]; 

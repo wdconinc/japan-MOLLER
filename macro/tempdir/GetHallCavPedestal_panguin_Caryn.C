@@ -59,7 +59,6 @@ void GetHallCavPedestal_panguin_Caryn(TString user_cut ="1", double MIN = -1000,
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
   // run 1404
   // TString beam_evtcut[] ={ 
   //   "Entry$>1e3 && Entry$<27e3",

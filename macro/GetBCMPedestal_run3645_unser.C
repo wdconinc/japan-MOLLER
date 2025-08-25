@@ -41,7 +41,6 @@ void GetBCMPedestal_run3645_unser(int run_num=3645,
   f_zero->SetLineStyle(9);
   
   TString branch_name;
-  TString num_samples_name;
 
   //  run 3395
   TCut beam_evtcut[] ={ 
