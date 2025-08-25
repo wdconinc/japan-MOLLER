@@ -30,6 +30,7 @@ void AposVscan_run4231(int run_num = 4231,TCut user_cut ="cleandata&&ErrorFlag==
    {"2i02X","2i02Y","0l01X","0l01Y",
    "11X","11Y","4aX","4aY","4eX","4eY"};
 
+ const int nbpm= sizeof(device_name)/sizeof(*device_name);
 TCanvas *c_bpm = new TCanvas("c_bpm","c_bpm",1200,900);
   c_bpm->Divide(nbpm/2,2);
 

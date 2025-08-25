@@ -96,6 +96,7 @@ void GetBPMPedestal_injector_Caryn_run5151(int run_num = 5151, TString scan_data
   f_zero->SetLineStyle(9);
   
   TString branch_name;
+  TString num_samples_name;
   
   TString my_cut; // cut for extracting each scan data point
   

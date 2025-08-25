@@ -36,6 +36,12 @@ int DoublePeak() {
   Double_t        CodaEventNumber;
   Double_t        ErrorFlag;
  
+  //for some reason, these sam definitions have to be present for it to work??? 
+  Double_t        yield_sam5_hw_sum;   
+  Double_t        yield_sam6_hw_sum;  
+  Double_t        yield_sam7_hw_sum;
+  Double_t        yield_sam8_hw_sum;
+  
   //Double_t        asym_cav4bQ_hw_sum;
   //Double_t        asym_cav4cQ_hw_sum;
   //Double_t        asym_cav4dQ_hw_sum;

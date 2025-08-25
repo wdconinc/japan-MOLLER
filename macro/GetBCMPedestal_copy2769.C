@@ -39,6 +39,7 @@ void GetBCMPedestal_copy2769(int run_num=2769,
   f_zero->SetLineStyle(9);
   
   TString branch_name;
+  TString num_samples_name;
   // run 1404
   // TString beam_evtcut[] ={ 
   //   "Entry$>1e3 && Entry$<27e3",

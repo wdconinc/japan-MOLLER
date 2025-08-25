@@ -192,6 +192,7 @@ void GetBCMPedestals_Cameron_anyrun_all_witherr(
   //  f_zero->SetLineStyle(9);
 
   TString branch_name;
+  TString num_samples_name;
 
   std::map <Int_t,std::vector<TCut>> beam_evtcut;// 
   beam_evtcut[2769] = { 

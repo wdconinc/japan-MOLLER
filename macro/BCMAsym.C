@@ -33,12 +33,22 @@ int BCMAsym() {
   Double_t supercyc[7]={20.0,21.0,22.0,23.0,24.0,25.0,26.0};
   Double_t supercycslope[7]={147420.0,147421.0,147422.0,147423.0,147424.0,147425.0,147426.0};
   const int n=7;//number of cycle
+  const double trimmin=0.38;
+  const double trimmax=0.7;
+  const double bpmmax=3;
+  const double bpmmin=1;
 
   //  TGraphErrors *test;
   TTree *tree_R = (TTree*) file1->Get("mul");
   Double_t        CodaEventNumber;
   Double_t        ErrorFlag;
  
+  //for some reason, these sam definitions have to be present for it to work??? 
+  Double_t        yield_sam5_hw_sum;   
+  Double_t        yield_sam6_hw_sum;  
+  Double_t        yield_sam7_hw_sum;
+  Double_t        yield_sam8_hw_sum;
+  
   //Double_t        asym_cav4bQ_hw_sum;
   //Double_t        asym_cav4cQ_hw_sum;
   //Double_t        asym_cav4dQ_hw_sum;

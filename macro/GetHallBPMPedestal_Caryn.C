@@ -56,6 +56,7 @@ TString device_name[] ={"4a","4e","12","14","8","4ac","4ec","1p02b","1p03a"};
   const int nBPM= sizeof(device_name)/sizeof(*device_name);
   TString ch_name[4]={"XP","XM","YP","YM"};
 
+  const int nbpm= sizeof(device_name)/sizeof(*device_name);
 
   TCanvas *c3 = new TCanvas("c3","c3",1500,600);
   c3->Divide(1,2);
@@ -70,6 +71,7 @@ TString device_name[] ={"4a","4e","12","14","8","4ac","4ec","1p02b","1p03a"};
   f_zero->SetLineStyle(9);
   
   TString branch_name;
+  TString num_samples_name;
 
    double adc_mean[5][ndata]; // 4 channels  + 1channel for wire sum
   double adc_error[5][ndata];
