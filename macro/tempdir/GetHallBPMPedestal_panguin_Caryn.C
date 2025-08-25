@@ -63,7 +63,6 @@ void GetHallBPMPedestal_panguin_Caryn(TString devnam="4a",TString scan_data = "u
   const int nBPM= sizeof(device_name)/sizeof(*device_name);
   TString ch_name[4]={"XP","XM","YP","YM"};
 
-  const int nbpm= sizeof(device_name)/sizeof(*device_name);
 
   TPad *c3 = new TPad("c3","c3",0,0,1,1);
   c3->Divide(1,2);

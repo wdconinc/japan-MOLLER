@@ -4,8 +4,6 @@ void PITAscan_Caryn(Int_t dset=1,TString device="det1", TString ucut ="1"){
   gROOT->Reset();
   //  gROOT->LoadMacro("macro/open.macro");  
   
-    TString scantype;
-
     TString gtitle;
     TString pstit;
 
@@ -91,7 +89,6 @@ void plot_element(TPad *p1, TPad* p2, TString devnam, TString lcut,
 
   TString *bpmNam = new TString(devnam);
 
-  Int_t ifnd = 0;
   TString tmpname;
   TString plotcommand;
 

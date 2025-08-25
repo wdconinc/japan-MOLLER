@@ -25,7 +25,6 @@ void GetBPMPedestal_run3396(int run_num=3396,
 			  "11","12","16"};
   TString ch_name[4]={"XP","XM","YP","YM"};
   const int nBPM= sizeof(device_name)/sizeof(*device_name);
-  const int nbpm= sizeof(device_name)/sizeof(*device_name);
 
   TCanvas *c1 = new TCanvas("c1","c1",1500,600);
   c1->Divide(1,2);

@@ -60,7 +60,6 @@ void GetHallBPMPedestal_3105(int run_num=3105,TString scan_data = "bcm_an_us",TS
   const int nBPM= sizeof(device_name)/sizeof(*device_name);
   TString ch_name[4]={"XP","XM","YP","YM"};
 
-  const int nbpm= sizeof(device_name)/sizeof(*device_name);
 
   TCanvas *c3 = new TCanvas("c3","c3",1500,600);
   c3->Divide(1,2);
