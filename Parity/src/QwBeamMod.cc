@@ -783,10 +783,6 @@ void  QwBeamMod::FillHistograms()
   // Seperated the ramp cut here because it is ridiculously long... 
   //
 
-  Double_t ramp_block_41 = fModChannel[fRampChannelIndex]->GetValue(4) + fModChannel[fRampChannelIndex]->GetValue(1); 
-  Double_t ramp_block_32 = fModChannel[fRampChannelIndex]->GetValue(3) + fModChannel[fRampChannelIndex]->GetValue(2);
-  Double_t ramp_block    = ramp_block_41 - ramp_block_32;  
-
 }
 
 

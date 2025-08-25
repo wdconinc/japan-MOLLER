@@ -552,7 +552,6 @@ Int_t QwBeamLine::LoadGeometryDefinition(TString mapfile){
   TString  melement;
   Double_t devOffsetX = 0,devOffsetY = 0, devOffsetZ = 0;
   Double_t devSENfactor = 0, devAlphaX = 0, devAlphaY = 0;
-  TString   rotation_stat;
   VQwBPM * bpm = NULL;
   
   if(ldebug)std::cout<<"QwBeamLine::LoadGeometryParameters("<< mapfile<<")\n";
