@@ -241,15 +241,15 @@ void QwMollerADC_Channel::LoadChannelParameters(QwParameterFile &paramfile){
 
 void QwMollerADC_Channel::ClearEventData()
 {
-  for (Int_t i = 0; i < fBlocksPerEvent; i++) {
-    fBlock_raw[i] = 0;
-    fBlockSumSq_raw[i] = 0;
-    fBlock_min[i] = 0;
-    fBlock_max[i] = 0;
-    fBlock[i] = 0.0;
-    fBlockM2[i] = 0.0;
-    fBlockError[i] = 0.0;
-  }
+  // Clear all valarray elements to 0
+  fBlock_raw = 0;
+  fBlockSumSq_raw = 0;
+  fBlock_min = 0;
+  fBlock_max = 0;
+  fBlock = 0.0;
+  fBlockM2 = 0.0;
+  fBlockError = 0.0;
+  
   fHardwareBlockSum_raw = 0;
   fSoftwareBlockSum_raw = 0;
   fHardwareBlockSum   = 0.0;
@@ -266,43 +266,51 @@ void QwMollerADC_Channel::RandomizeEventData(int helicity, double time)
 {
   // updated to calculate the drift for each block individually
   Double_t drift = 0.0;
-  for (Int_t i = 0; i < fBlocksPerEvent; i++){
-    drift = 0.0;
-    if (i >= 1){
-      time += (fNumberOfSamples_map/4.0)*kTimePerSample;
-    }
-    for (UInt_t i = 0; i < fMockDriftFrequency.size(); i++) {
-      drift += fMockDriftAmplitude[i] * sin(2.0 * Qw::pi * fMockDriftFrequency[i] * time + fMockDriftPhase[i]);
-      //std::cout << "Drift: " << drift << std::endl;
-    }
-  }
-
+  
   // Calculate signal
   fHardwareBlockSum = 0.0;
   fHardwareBlockSumM2 = 0.0; // second moment is zero for single events
-  fBlock_max[4] = kMinInt;
-  fBlock_min[4] = kMaxInt;
-
-  for (Int_t i = 0; i < fBlocksPerEvent; i++) {
-    double tmpvar = GetRandomValue();
-
-    fBlock[i] = fMockGaussianMean + drift;
-
-    if (fCalcMockDataAsDiff) {
-      fBlock[i] += helicity*fMockAsymmetry;
-    } else {
-      fBlock[i] *= 1.0 + helicity*fMockAsymmetry;
+  
+  // Initialize min/max for hardware sum (index 4*fDimension for each dimension)
+  for (int dim = 0; dim < fDimension; dim++) {
+    int offset = dim * 5; // 5 elements per dimension (4 blocks + 1 sum)
+    if (offset + 4 < fBlock_max.size()) {
+      fBlock_max[offset + 4] = kMinInt;
+      fBlock_min[offset + 4] = kMaxInt;
     }
-    fBlock[i] += fMockGaussianSigma*tmpvar*sqrt(fBlocksPerEvent);
-    fBlockM2[i] = 0.0; // second moment is zero for single events
-    fHardwareBlockSum += fBlock[i];
-
   }
-  fHardwareBlockSum /= fBlocksPerEvent;
+
+  // Process each dimension and each block
+  for (int dim = 0; dim < fDimension; dim++) {
+    for (Int_t i = 0; i < fBlocksPerEvent; i++){
+      int idx = dim * 4 + i; // index in the valarray
+      if (idx >= fBlock.size()) break;
+      
+      drift = 0.0;
+      if (i >= 1){
+        time += (fNumberOfSamples_map/4.0)*kTimePerSample;
+      }
+      for (UInt_t j = 0; j < fMockDriftFrequency.size(); j++) {
+        drift += fMockDriftAmplitude[j] * sin(2.0 * Qw::pi * fMockDriftFrequency[j] * time + fMockDriftPhase[j]);
+      }
+      
+      double tmpvar = GetRandomValue();
+      fBlock[idx] = fMockGaussianMean + drift;
+
+      if (fCalcMockDataAsDiff) {
+        fBlock[idx] += helicity*fMockAsymmetry;
+      } else {
+        fBlock[idx] *= 1.0 + helicity*fMockAsymmetry;
+      }
+      fBlock[idx] += fMockGaussianSigma*tmpvar*sqrt(fBlocksPerEvent);
+      fBlockM2[idx] = 0.0; // second moment is zero for single events
+      fHardwareBlockSum += fBlock[idx];
+    }
+  }
+  
+  fHardwareBlockSum /= (fBlocksPerEvent * fDimension);
   fSequenceNumber = 0;
   fNumberOfSamples = fNumberOfSamples_map;
-  //  SetEventData(block);
-  //  delete block;
   return;
 }
 
@@ -310,15 +318,19 @@ void QwMollerADC_Channel::SmearByResolution(double resolution){
 
   fHardwareBlockSum   = 0.0;
   fHardwareBlockSumM2 = 0.0; // second moment is zero for single events
-  for (Int_t i = 0; i < fBlocksPerEvent; i++) {
-
-    fBlock[i] += resolution*sqrt(fBlocksPerEvent) * GetRandomValue();
- 
-    fBlockM2[i] = 0.0; // second moment is zero for single events
-    fHardwareBlockSum += fBlock[i];
+  
+  // Process each dimension and each block
+  for (int dim = 0; dim < fDimension; dim++) {
+    for (Int_t i = 0; i < fBlocksPerEvent; i++) {
+      int idx = dim * 4 + i; // index in the valarray
+      if (idx >= fBlock.size()) break;
+      
+      fBlock[idx] += resolution*sqrt(fBlocksPerEvent) * GetRandomValue();
+      fBlockM2[idx] = 0.0; // second moment is zero for single events
+      fHardwareBlockSum += fBlock[idx];
+    }
   }
-  // std::cout << std::endl;
-  fHardwareBlockSum /= fBlocksPerEvent;
+  fHardwareBlockSum /= (fBlocksPerEvent * fDimension);
 
   fNumberOfSamples = fNumberOfSamples_map;
   // SetRawEventData();

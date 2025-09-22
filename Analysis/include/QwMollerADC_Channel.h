@@ -10,6 +10,7 @@
 
 // System headers
 #include <vector>
+#include <valarray>
 
 // ROOT headers
 #include "TTree.h"
@@ -57,11 +58,17 @@ class QwMollerADC_Channel: public VQwHardwareChannel, public MQwMockable {
   using VQwHardwareChannel::DeaccumulateRunningSum;
 
  public:
-  QwMollerADC_Channel(): MQwMockable() {
+  QwMollerADC_Channel(int dimension = 1): MQwMockable(), 
+    fDimension(dimension),
+    fBlock_raw(4*dimension), fBlockSumSq_raw(5*dimension), fBlock_min(5*dimension), fBlock_max(5*dimension), 
+    fBlock_numSamples(5*dimension), fBlock(4*dimension), fBlockM2(4*dimension), fBlockError(4*dimension) {
     InitializeChannel("","");
     SetMollerADCSaturationLimt(8.5);//set the default saturation limit
   };
-  QwMollerADC_Channel(TString name, TString datatosave = "raw"): MQwMockable() {
+  QwMollerADC_Channel(TString name, TString datatosave = "raw", int dimension = 1): MQwMockable(),
+    fDimension(dimension),
+    fBlock_raw(4*dimension), fBlockSumSq_raw(5*dimension), fBlock_min(5*dimension), fBlock_max(5*dimension), 
+    fBlock_numSamples(5*dimension), fBlock(4*dimension), fBlockM2(4*dimension), fBlockError(4*dimension) {
     InitializeChannel(name, datatosave);
     SetMollerADCSaturationLimt(8.5);//set the default saturation limit
   };
@@ -69,7 +76,12 @@ class QwMollerADC_Channel: public VQwHardwareChannel, public MQwMockable {
     VQwHardwareChannel(value), MQwMockable(value),
     fBlocksPerEvent(value.fBlocksPerEvent),
     fNumberOfSamples_map(value.fNumberOfSamples_map),
-    fSaturationABSLimit(value.fSaturationABSLimit)
+    fSaturationABSLimit(value.fSaturationABSLimit),
+    fDimension(value.fDimension),
+    fBlock_raw(value.fBlock_raw), fBlockSumSq_raw(value.fBlockSumSq_raw), 
+    fBlock_min(value.fBlock_min), fBlock_max(value.fBlock_max), 
+    fBlock_numSamples(value.fBlock_numSamples), fBlock(value.fBlock), 
+    fBlockM2(value.fBlockM2), fBlockError(value.fBlockError)
   {
     *this = value;
   };
@@ -77,7 +89,12 @@ class QwMollerADC_Channel: public VQwHardwareChannel, public MQwMockable {
     VQwHardwareChannel(value,datatosave), MQwMockable(value),
     fBlocksPerEvent(value.fBlocksPerEvent),
     fNumberOfSamples_map(value.fNumberOfSamples_map),
-    fSaturationABSLimit(value.fSaturationABSLimit)
+    fSaturationABSLimit(value.fSaturationABSLimit),
+    fDimension(value.fDimension),
+    fBlock_raw(value.fBlock_raw), fBlockSumSq_raw(value.fBlockSumSq_raw), 
+    fBlock_min(value.fBlock_min), fBlock_max(value.fBlock_max), 
+    fBlock_numSamples(value.fBlock_numSamples), fBlock(value.fBlock), 
+    fBlockM2(value.fBlockM2), fBlockError(value.fBlockError)
   {
     *this = value;
   };
@@ -88,6 +105,15 @@ class QwMollerADC_Channel: public VQwHardwareChannel, public MQwMockable {
     fBlocksPerEvent = value.fBlocksPerEvent;
     fNumberOfSamples_map = value.fNumberOfSamples_map;
     fSaturationABSLimit = value.fSaturationABSLimit;
+    fDimension = value.fDimension;
+    fBlock_raw = value.fBlock_raw;
+    fBlockSumSq_raw = value.fBlockSumSq_raw;
+    fBlock_min = value.fBlock_min;
+    fBlock_max = value.fBlock_max;
+    fBlock_numSamples = value.fBlock_numSamples;
+    fBlock = value.fBlock;
+    fBlockM2 = value.fBlockM2;
+    fBlockError = value.fBlockError;
     *this = value;
   };
   
@@ -103,6 +129,9 @@ class QwMollerADC_Channel: public VQwHardwareChannel, public MQwMockable {
 
   /// \brief Initialize the fields in this object
   void  InitializeChannel(TString subsystem, TString instrumenttype, TString name, TString datatosave);
+
+  /// \brief Get the dimensionality of this channel
+  int GetDimensionality() const { return fDimension; }
 
   void LoadChannelParameters(QwParameterFile &paramfile);
 
@@ -308,17 +337,17 @@ private:
 
   /*! \name Event data members---Raw values */
   // @{
-  Int_t fBlock_raw[4];      ///< Array of the sub-block data as read from the module
+  std::valarray<Int_t> fBlock_raw;      ///< Array of the sub-block data as read from the module
   Int_t fHardwareBlockSum_raw; ///< Module-based sum of the four sub-blocks as read from the module
   Int_t fSoftwareBlockSum_raw; ///< Sum of the data in the four sub-blocks raw
-  Long64_t fBlockSumSq_raw[5]; 
-  Int_t fBlock_min[5];
-  Int_t fBlock_max[5];
-  Short_t fBlock_numSamples[5];
+  std::valarray<Long64_t> fBlockSumSq_raw; 
+  std::valarray<Int_t> fBlock_min;
+  std::valarray<Int_t> fBlock_max;
+  std::valarray<Short_t> fBlock_numSamples;
   /*! \name Event data members---Potentially calibrated values*/
   // @{
   // The following values potentially have pedestal removed  and calibration applied
-  Double_t fBlock[4];          ///< Array of the sub-block data
+  std::valarray<Double_t> fBlock;          ///< Array of the sub-block data
   Double_t fHardwareBlockSum;  ///< Module-based sum of the four sub-blocks
   // @}
 
@@ -326,8 +355,8 @@ private:
   /// \name Calculation of the statistical moments
   // @{
   // Moments of the separate blocks
-  Double_t fBlockM2[4];        ///< Second moment of the sub-block
-  Double_t fBlockError[4];     ///< Uncertainty on the sub-block
+  std::valarray<Double_t> fBlockM2;        ///< Second moment of the sub-block
+  std::valarray<Double_t> fBlockError;     ///< Uncertainty on the sub-block
   // Moments of the hardware sum
   Double_t fHardwareBlockSumM2;    ///< Second moment of the hardware sum
   Double_t fHardwareBlockSumError; ///< Uncertainty on the hardware sum
@@ -364,6 +393,9 @@ private:
 
 
   Double_t fSaturationABSLimit;///<absolute value of the MollerADC saturation volt
+
+  /// Channel dimensionality (1 for single channel, 8 for module)
+  int fDimension;
 
 
   const static Bool_t bDEBUG=kFALSE;///<debugging display purposes
