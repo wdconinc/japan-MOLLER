@@ -37,7 +37,7 @@ class MQwHistograms {
 
     inline void Fill_Pointer(TH1_ptr hist_ptr, Double_t value){
       if (hist_ptr != NULL){
-	hist_ptr->Fill(value);
+        hist_ptr->Fill(value);
       }
     }
 
@@ -49,6 +49,7 @@ class MQwHistograms {
     /// Register a histogram
     void AddHistogram(TH1* h) {
       fHistograms.push_back(TH1_ptr(h));
+	  fHistograms.back()->SetBuffer(1000);
     }
 
   public:
