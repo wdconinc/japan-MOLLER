@@ -200,6 +200,122 @@ After making changes, always test these complete workflows:
 
 **Remember: Always wait for long-running commands to complete. Builds may take 45+ minutes in some environments.**
 
+## Code Style and Conventions
+
+### C++ Coding Standards
+
+The project follows modern C++ practices with some physics-specific adaptations:
+
+- **C++ Standard**: C++11 or later (GCC 4.8+ required)
+- **Header Files**: Use `.hh` extension for headers, `.cc` for implementation
+- **Naming Conventions**:
+  - Classes: PascalCase (e.g., `QwPromptSummary`)
+  - Methods: PascalCase (e.g., `ProcessEvent()`)
+  - Variables: camelCase with prefixes (e.g., `fElementName` for member variables)
+  - Constants: ALL_CAPS or kConstantName
+
+### Static Analysis
+
+The project uses clang-tidy for code quality. Configuration in `.clang-tidy`:
+- Enables: bugprone, concurrency, cppcoreguidelines, modernize, portability, readability
+- Disabled checks accommodate ROOT framework and physics code patterns
+- Run with: `clang-tidy Analysis/src/filename.cc`
+
+### ROOT Framework Integration
+
+- **ROOT Types**: Use ROOT types (TString, Double_t) for ROOT compatibility
+- **Memory Management**: Follow ROOT ownership patterns for histograms and trees
+- **Style**: Physics analysis code may use different patterns than general C++
+
+## Git Workflow and Contribution Guidelines
+
+### Branch Management
+
+Follow the workflow described in README.md:
+
+1. **Always start with latest code**: `git pull`
+2. **Create feature branches**: `git checkout -b descriptiveName`
+3. **Track branches remotely**: `git push -u origin branchName`  
+4. **Commit with author info**: `git commit --author=username`
+5. **Keep commits focused**: One logical change per commit
+
+### Repository Structure for Contributions
+
+- **Analysis/**: Core framework - requires careful testing
+- **Parity/**: Main executables - test with mock data first
+- **Tests/**: Always run full test suite after changes
+- **SetupFiles/**: Environment setup - changes affect all users
+- **panguin/**: Independent plotting tool - separate build required
+
+### Pull Request Guidelines
+
+- Test builds in both Docker and host environments when possible
+- Run complete test suite: `./Tests/run_tests.sh`
+- Validate with mock data before testing with real data
+- Document any new configuration requirements
+- Include timing expectations for new long-running operations
+
+## Tool Calling Guidelines for AI Agents
+
+### Using bash Tool Effectively
+
+**Long-running Commands** (CRITICAL - do not ignore):
+```bash
+# Always use appropriate timeouts for builds
+bash: docker build -t japan-moller .
+  timeout: 3600  # 60 minutes minimum
+  async: false
+
+# Test runs need sufficient time  
+bash: ./Tests/run_tests.sh
+  timeout: 1800  # 30 minutes minimum
+  async: false
+
+# Mock data analysis
+bash: build/qwparity -r 10 -e :10000 --config qwparity_simple.conf
+  timeout: 600   # 10 minutes minimum
+  async: false
+```
+
+**Environment Setup Sequence**:
+```bash
+# 1. Generate setup scripts first
+./SetupFiles/make_SET_ME_UP
+
+# 2. Source environment (required for builds)
+source SetupFiles/SET_ME_UP.bash
+
+# 3. Set scratch directory
+export QWSCRATCH=/tmp/qw_scratch && mkdir -p $QWSCRATCH
+```
+
+**Docker Usage Patterns**:
+```bash
+# Build container (long-running - 15-45 minutes)
+docker build -t japan-moller . 
+  # timeout: 3600, async: false
+
+# Run interactive analysis
+docker run -it japan-moller /bin/bash
+  # Use async: true for interactive work
+```
+
+### File Operations
+
+- **Always use absolute paths**: `/home/runner/work/japan-MOLLER/japan-MOLLER/...`
+- **Check file existence** before operations: `str_replace_editor view` first
+- **Configuration files** are in: `Parity/prminput/`
+- **Test scripts** are in: `Tests/`
+- **Built executables** are in: `build/` (after compilation)
+
+### Testing Strategy for Agents
+
+1. **Environment validation**: Run `Tests/002_setupfiles.sh` first
+2. **Compilation test**: Run `Tests/001_compilation.sh` 
+3. **Mock data workflow**: Generate and analyze test data
+4. **Regression tests**: Run full `Tests/run_tests.sh` suite
+5. **Tool-specific tests**: Test panguin separately if modified
+
 ## Common Commands and Frequently Used Information
 
 The following are outputs from frequently run commands. Reference them instead of running bash commands to save time.
