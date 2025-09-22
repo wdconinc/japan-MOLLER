@@ -31,13 +31,17 @@ class QwDBInterface;
 class QwIntegrationPMT : public VQwDataElement{
 /////
  public:
-  QwIntegrationPMT() { 
+  QwIntegrationPMT() : fTriumf_ADC(1) { 
     InitializeChannel("","raw");
   };
-  QwIntegrationPMT(TString name){
+  QwIntegrationPMT(TString name) : fTriumf_ADC(1) {
     InitializeChannel(name,"raw");
   };
-  QwIntegrationPMT(TString subsystemname, TString name){
+  QwIntegrationPMT(TString subsystemname, TString name) : fTriumf_ADC(1) {
+    SetSubsystemName(subsystemname);
+    InitializeChannel(subsystemname, name,"raw");
+  };
+  QwIntegrationPMT(TString subsystemname, TString name, int dimension) : fTriumf_ADC(dimension) {
     SetSubsystemName(subsystemname);
     InitializeChannel(subsystemname, name,"raw");
   };

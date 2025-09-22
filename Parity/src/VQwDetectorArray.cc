@@ -363,7 +363,7 @@ Int_t VQwDetectorArray::LoadChannelMap(TString mapfile) {
 
             if (localMainDetID.fTypeID==kQwIntegrationPMT){
 
-                QwIntegrationPMT localIntegrationPMT(GetName(),localMainDetID.fdetectorname);
+                QwIntegrationPMT localIntegrationPMT(GetName(),localMainDetID.fdetectorname, 8);
 
 		        if (keyword=="not_blindable" || keyword2=="not_blindable")
 		         localIntegrationPMT.SetBlindability(kFALSE);
