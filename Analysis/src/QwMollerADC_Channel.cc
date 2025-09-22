@@ -892,14 +892,16 @@ QwMollerADC_Channel& QwMollerADC_Channel::operator= (const QwMollerADC_Channel &
 
   if (!IsNameEmpty()) {
     VQwHardwareChannel::operator=(value);
-    for (Int_t i=0; i<fBlocksPerEvent; i++){
-      this->fBlock_raw[i] = value.fBlock_raw[i];
-      this->fBlock[i]     = value.fBlock[i];
-      this->fBlockM2[i]   = value.fBlockM2[i];
-      this->fBlockSumSq_raw[i] = value.fBlockSumSq_raw[i];
-      this->fBlock_min[i]     = value.fBlock_min[i];
-      this->fBlock_max[i]     = value.fBlock_max[i];
-    }
+    
+    // Use valarray assignment for efficient copying
+    this->fBlock_raw = value.fBlock_raw;
+    this->fBlock = value.fBlock;
+    this->fBlockM2 = value.fBlockM2;
+    this->fBlockSumSq_raw = value.fBlockSumSq_raw;
+    this->fBlock_min = value.fBlock_min;
+    this->fBlock_max = value.fBlock_max;
+    this->fBlock_numSamples = value.fBlock_numSamples;
+    
     this->fHardwareBlockSum_raw = value.fHardwareBlockSum_raw;
     this->fSoftwareBlockSum_raw = value.fSoftwareBlockSum_raw;
     this->fHardwareBlockSum = value.fHardwareBlockSum;
@@ -907,7 +909,7 @@ QwMollerADC_Channel& QwMollerADC_Channel::operator= (const QwMollerADC_Channel &
     this->fHardwareBlockSumError = value.fHardwareBlockSumError;
     this->fNumberOfSamples = value.fNumberOfSamples;
     this->fSequenceNumber  = value.fSequenceNumber;
-   
+    this->fDimension = value.fDimension;
 
   }
   return *this;
