@@ -120,8 +120,7 @@ list(APPEND my_project_headers ${CMAKE_BINARY_DIR}/version-config.h)
 # Compiler flags
 #
 set_compiler_flags("${ROOT_CXX_FLAGS}")
-#set_diagnostic_flags(WALL WEXTRA)
-set_diagnostic_flags(WALL)
+set_diagnostic_flags(WALL WEXTRA)
 report_build_info()
 
 
