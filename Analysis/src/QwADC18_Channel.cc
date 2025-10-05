@@ -386,7 +386,7 @@ Int_t QwADC18_Channel::ProcessEvBuffer(UInt_t* buffer, UInt_t num_words_left, UI
     Int_t n = 25;
     for (size_t i = 0; i < num_words_left; i++) {
       QwOut << "0x" << std::setfill('0') << std::setw(8) << buffer[i] << " ";
-      if (i % n == n - 1) QwOut << QwLog::endl;
+      if (i % n + 1 == n) QwOut << QwLog::endl;
     }
     QwOut << std::dec << std::setfill(' ') << std::setw(0) << QwLog::endl;
   }
